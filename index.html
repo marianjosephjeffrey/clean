@@ -304,93 +304,107 @@
         }
 
         /* Experience Section */
-        .experience-timeline {
-            position: relative;
-            padding-left: 3rem;
+        .experience-grid {
+            display: grid;
+            gap: 2rem;
         }
 
-        .experience-timeline::before {
+        .experience-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .experience-card::before {
             content: '';
             position: absolute;
             left: 0;
             top: 0;
             bottom: 0;
-            width: 2px;
+            width: 4px;
             background: linear-gradient(180deg, var(--accent-red), var(--accent-yellow));
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
         }
 
-        .experience-item {
-            position: relative;
-            margin-bottom: 4rem;
-            padding-left: 2rem;
+        .experience-card:hover {
+            border-color: var(--accent-red);
+            transform: translateX(10px);
+            box-shadow: -5px 5px 30px rgba(248, 81, 73, 0.1);
         }
 
-        .experience-item::before {
-            content: '';
+        .experience-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .experience-card.current {
+            border-color: var(--accent-red);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(248, 81, 73, 0.03) 100%);
+        }
+
+        .experience-card.current::after {
+            content: 'CURRENT';
             position: absolute;
-            left: -3.5rem;
-            top: 0.5rem;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-red);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--glow-red);
-        }
-
-        .experience-item.current::before {
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            padding: 0.35rem 0.75rem;
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            letter-spacing: 1px;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 10px var(--glow-red); }
-            50% { box-shadow: 0 0 20px var(--glow-red), 0 0 30px var(--glow-red); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .experience-header {
             display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .experience-item h3 {
+        .experience-card h3 {
             font-size: 1.8rem;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .company {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--accent-blue);
             font-family: 'Fira Code', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .company::before {
+            content: '@';
+            color: var(--text-muted);
         }
 
         .period {
             font-family: 'Fira Code', monospace;
             font-size: 0.9rem;
             color: var(--text-muted);
-            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .experience-item ul {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
-        .experience-item li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-            color: var(--text-secondary);
-        }
-
-        .experience-item li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--accent-red);
+        .period::before {
+            content: '📅';
+            font-size: 0.85rem;
         }
 
         /* Projects */
@@ -758,12 +772,10 @@
                 grid-template-columns: 1fr;
             }
 
-            .experience-timeline {
-                padding-left: 2rem;
-            }
-
-            .experience-item {
-                padding-left: 1.5rem;
+            .experience-card.current::after {
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.65rem;
             }
 
             .skill-items {
@@ -822,33 +834,27 @@
     <section id="experience">
         <div class="container">
             <h2>Experience</h2>
-            <div class="experience-timeline">
-                <div class="experience-item current">
+            <div class="experience-grid">
+                <div class="experience-card current">
                     <div class="experience-header">
-                        <div>
-                            <h3>Security Engineer</h3>
-                            <div class="company">Perfect Solutions Group Inc</div>
-                        </div>
+                        <h3>Security Engineer</h3>
+                        <div class="company">Perfect Solutions Group Inc</div>
                         <div class="period">July 2025 - Present</div>
                     </div>
                 </div>
 
-                <div class="experience-item">
+                <div class="experience-card">
                     <div class="experience-header">
-                        <div>
-                            <h3>Application Security Engineer</h3>
-                            <div class="company">Bright Mind Enrichment and Schooling (BME)</div>
-                        </div>
+                        <h3>Application Security Engineer</h3>
+                        <div class="company">Bright Mind Enrichment and Schooling (BME)</div>
                         <div class="period">Aug 2024 - July 2025</div>
                     </div>
                 </div>
 
-                <div class="experience-item">
+                <div class="experience-card">
                     <div class="experience-header">
-                        <div>
-                            <h3>System Engineer - DevSecOps</h3>
-                            <div class="company">Tata Consultancy Services</div>
-                        </div>
+                        <h3>System Engineer - DevSecOps</h3>
+                        <div class="company">Tata Consultancy Services</div>
                         <div class="period">Aug 2020 - Aug 2022</div>
                     </div>
                 </div>
@@ -1493,7 +1499,7 @@ ACHIEVEMENTS
             });
         }, observerOptions);
 
-        document.querySelectorAll('.experience-item, .project-card, .education-card, .cert-card').forEach(el => {
+        document.querySelectorAll('.experience-card, .project-card, .education-card, .cert-card').forEach(el => {
             observer.observe(el);
         });
     </script>
