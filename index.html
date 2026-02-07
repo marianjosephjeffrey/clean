@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marian John | Security Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --bg-elevated: #21262d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-red: #f85149;
+            --accent-green: #3fb950;
+            --accent-blue: #58a6ff;
+            --accent-yellow: #d29922;
+            --border: #30363d;
+            --glow-red: rgba(248, 81, 73, 0.4);
+            --glow-green: rgba(63, 185, 80, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Scanline effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.01) 2px,
+                rgba(255, 255, 255, 0.01) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.5;
+        }
+
+        /* Grid background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .logo::before {
+            content: '[';
+            color: var(--text-muted);
+        }
+
+        .logo::after {
+            content: ']';
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            font-family: 'Fira Code', monospace;
+        }
+
+        nav a:hover {
+            color: var(--accent-red);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 8rem 0 4rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .terminal-header {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -3px;
+            opacity: 0;
+            animation: slideUp 1s ease 0.2s forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); }
+        }
+
+        .hero h1 span {
+            display: block;
+        }
+
+        .hero h1 .name {
+            color: var(--text-primary);
+        }
+
+        .hero h1 .title {
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .location {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.4s forwards;
+        }
+
+        .hero .location::before {
+            content: '📍 ';
+        }
+
+        .hero-description {
+            max-width: 700px;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: slideUp 1s ease 0.6s forwards;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.8s forwards;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-left: 3px solid var(--accent-red);
+        }
+
+        .stat-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            opacity: 0;
+            animation: slideUp 1s ease 1s forwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px var(--glow-red);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* Section Headers */
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            font-weight: 700;
+            position: relative;
+            letter-spacing: -2px;
+        }
+
+        h2::before {
+            content: '//';
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+            margin-right: 1rem;
+        }
+
+        /* Experience Section */
+        .experience-timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .experience-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-red), var(--accent-yellow));
+        }
+
+        .experience-item {
+            position: relative;
+            margin-bottom: 4rem;
+            padding-left: 2rem;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -3.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--glow-red);
+        }
+
+        .experience-item.current::before {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px var(--glow-red); }
+            50% { box-shadow: 0 0 20px var(--glow-red), 0 0 30px var(--glow-red); }
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .experience-item h3 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .company {
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .period {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .experience-item ul {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .experience-item li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .experience-item li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-red);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-yellow));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-red);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-period {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .tools-used {
+            margin-top: 1.5rem;
+        }
+
+        .tools-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            color: var(--accent-red);
+        }
+
+        /* Education */
+        .education-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .education-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-green);
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .education-card:hover {
+            transform: translateX(10px);
+            box-shadow: -5px 0 20px rgba(63, 185, 80, 0.1);
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .education-card h3 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .school {
+            font-size: 1.1rem;
+            color: var(--accent-green);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .gpa {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-yellow);
+            font-size: 1.1rem;
+        }
+
+        .courses {
+            margin-top: 1.5rem;
+        }
+
+        .courses-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .courses p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Skills */
+        .skills-section {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+        }
+
+        .skill-category h3 {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .skill-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-item {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            transform: translateX(5px);
+        }
+
+        .skill-item::before {
+            content: '◆ ';
+            color: var(--accent-blue);
+        }
+
+        /* TryHackMe Section */
+        .thm-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .thm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .thm-title {
+            font-size: 2rem;
+            color: var(--accent-green);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .thm-rank {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            color: var(--accent-yellow);
+            padding: 0.75rem 1.5rem;
+            background: rgba(210, 153, 34, 0.1);
+            border: 1px solid rgba(210, 153, 34, 0.3);
+        }
+
+        .ctf-achievements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .ctf-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .ctf-card h4 {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-yellow);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .ctf-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Certifications */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert-card::before {
+            content: '✓';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 5rem;
+            color: var(--accent-green);
+            opacity: 0.1;
+        }
+
+        .cert-card:hover {
+            border-color: var(--accent-green);
+            transform: scale(1.05);
+        }
+
+        .cert-card h3 {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.2rem;
+            color: var(--accent-green);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent-red);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 2rem;
+            }
+
+            nav .container {
+                padding: 0 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .experience-timeline {
+                padding-left: 2rem;
+            }
+
+            .experience-item {
+                padding-left: 1.5rem;
+            }
+
+            .skill-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">MARIAN_JOHN</a>
+            <ul>
+                <li><a href="#experience">experience</a></li>
+                <li><a href="#projects">projects</a></li>
+                <li><a href="#education">education</a></li>
+                <li><a href="#skills">skills</a></li>
+                <li><a href="#writeups">writeups</a></li>
+                <li><a href="#certifications">certs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="terminal-header">mjcube1999@security:~$</div>
+            <h1>
+                <span class="name">MARIAN JOHN</span>
+                <span class="title">SECURITY ENGINEER</span>
+            </h1>
+            <div class="location">Houston, TX</div>
+            <p class="hero-description">
+                Security Engineer specializing in endpoint security, cloud governance, and application security. Experienced in strengthening data protection, improving compliance rates, and implementing security hardening across enterprise environments.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-value">3.8</div>
+                    <div class="stat-label">GPA - MEng Cybersecurity</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">TOP 1%</div>
+                    <div class="stat-label">TryHackMe Ranking</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">96%</div>
+                    <div class="stat-label">Endpoint Compliance Rate</div>
+                </div>
+            </div>
+            <div class="hero-cta">
+                <a href="#experience" class="btn btn-primary">View Experience</a>
+                <a href="#" class="btn btn-secondary" id="downloadResume">Download Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <h2>Experience</h2>
+            <div class="experience-timeline">
+                <div class="experience-item current">
+                    <div class="experience-header">
+                        <div>
+                            <h3>Security Engineer</h3>
+                            <div class="company">Perfect Solutions Group Inc</div>
+                        </div>
+                        <div class="period">July 2025 - Present</div>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <h3>Application Security Engineer</h3>
+                            <div class="company">Bright Mind Enrichment and Schooling (BME)</div>
+                        </div>
+                        <div class="period">Aug 2024 - July 2025</div>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <h3>System Engineer - DevSecOps</h3>
+                            <div class="company">Tata Consultancy Services</div>
+                        </div>
+                        <div class="period">Aug 2020 - Aug 2022</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>IBM Clicked Incident Management</h3>
+                            <div class="project-period">Jan 2024 - May 2024</div>
+                        </div>
+                    </div>
+                    <p>Developed and implemented an enterprise security program for an ed-tech startup, ensuring strong cybersecurity. Managed Incident Response for a phishing attack, swiftly mitigating threats and minimizing damage. Developed a security plan and roadmap integrating SIEM, IDS, firewalls, and compliance with NIST, ISO, and cyber laws.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS USED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">IP Quality Score</span>
+                            <span class="tag">URL Scan</span>
+                            <span class="tag">Virus Hash</span>
+                            <span class="tag">Total Virus</span>
+                            <span class="tag">Talos Intelligence</span>
+                            <span class="tag">IP Location</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Incident-Management" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Information Assurance</h3>
+                            <div class="project-period">Jan 2024 - May 2024</div>
+                        </div>
+                    </div>
+                    <p>Led the development and implementation of an integrated security solution using IPS, IDS, and EDR technologies. Performed network security assessments, identified vulnerabilities, deployed endpoint security, and enforced DLP strategies. Implemented SOAR tools for efficient incident response and disaster recovery.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS USED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">Snort</span>
+                            <span class="tag">Suricata</span>
+                            <span class="tag">CrowdStrike Falcon</span>
+                            <span class="tag">Microsoft Defender</span>
+                            <span class="tag">Microsoft Sentinel</span>
+                            <span class="tag">Qualys</span>
+                            <span class="tag">Nessus</span>
+                            <span class="tag">Wireshark</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Information-Assurance" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Cloud Security (AWS & Azure)</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Comprehensive cloud security implementation covering IAM, AWS GuardDuty, WAF configurations, and security hardening across AWS and Azure environments. Focused on cloud security compliance and best practices.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS USED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">AWS IAM</span>
+                            <span class="tag">AWS GuardDuty</span>
+                            <span class="tag">AWS WAF</span>
+                            <span class="tag">Azure Security Center</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Cloud-Security" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Penetration Testing</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Hands-on penetration testing projects covering web application exploitation, network attacks, privilege escalation, and post-exploitation techniques using industry-standard tools.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS USED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">Metasploit</span>
+                            <span class="tag">Burp Suite</span>
+                            <span class="tag">Nmap</span>
+                            <span class="tag">Hydra</span>
+                            <span class="tag">SQLmap</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Penetration-Testing" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Secure Coding & Software Engineering</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Implementation of secure coding practices, vulnerability analysis, and building secure applications. Focus on preventing common vulnerabilities like SQL injection, XSS, and CSRF.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TECHNOLOGIES:</div>
+                        <div class="tech-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">C/C++</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">OWASP</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Secure-Coding" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Hacking of C Programming and Unix Binaries</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Low-level binary exploitation, reverse engineering, and vulnerability research in C programs and Unix systems. Includes buffer overflow, format string exploits, and return-oriented programming.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS USED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">GDB</span>
+                            <span class="tag">Ghidra</span>
+                            <span class="tag">Pwn-dbg</span>
+                            <span class="tag">Radare2</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Hacking-of-C-Programming-and-Unix-Binaries" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Network Security</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Network security implementations including packet analysis, intrusion detection, firewall configurations, and network-based attacks and defenses.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS USED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">Wireshark</span>
+                            <span class="tag">Snort</span>
+                            <span class="tag">Nmap</span>
+                            <span class="tag">Cisco Packet Tracer</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Network-Security" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Security Tools for Information Security</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Comprehensive exploration of security tools and frameworks used in information security, including SIEM, vulnerability scanners, and security automation.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">TOOLS COVERED:</div>
+                        <div class="tech-tags">
+                            <span class="tag">Splunk</span>
+                            <span class="tag">Nessus</span>
+                            <span class="tag">OpenVAS</span>
+                            <span class="tag">OSSEC</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Security-Tools" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3>Embedded Systems Security and Hacking</h3>
+                            <div class="project-period">University of Maryland</div>
+                        </div>
+                    </div>
+                    <p>Security analysis and exploitation of embedded systems, IoT devices, and hardware security including firmware analysis and hardware hacking techniques.</p>
+                    <div class="tools-used">
+                        <div class="tools-label">FOCUS AREAS:</div>
+                        <div class="tech-tags">
+                            <span class="tag">Firmware Analysis</span>
+                            <span class="tag">IoT Security</span>
+                            <span class="tag">Hardware Hacking</span>
+                            <span class="tag">ARM Assembly</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://github.com/marianjosephjeffrey/Embedded-Systems-Security-and-Hacking" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-family: 'Fira Code', monospace; font-size: 0.9rem;">→ View on GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <div class="container">
+            <h2>Education</h2>
+            <div class="education-grid">
+                <div class="education-card">
+                    <div class="education-header">
+                        <div>
+                            <h3>Master of Engineering in Cybersecurity</h3>
+                            <div class="school">University of Maryland, College Park</div>
+                            <div style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">2022 - 2024 • Cum Laude</div>
+                        </div>
+                        <div class="gpa">GPA: 3.8/4.0</div>
+                    </div>
+                    <div class="courses">
+                        <div class="courses-label">RELEVANT COURSES:</div>
+                        <p>Secure Coding, Cloud Security, Penetration Testing, Security Tools for Information Security, Network Security & Hacking of C and Unix Binaries</p>
+                    </div>
+                </div>
+
+                <div class="education-card">
+                    <div class="education-header">
+                        <div>
+                            <h3>B. Tech in Electronics and Communication Engineering</h3>
+                            <div class="school">Amrita Vishwa Vidyapeetham, Coimbatore</div>
+                            <div style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">2016 - 2020</div>
+                        </div>
+                        <div class="gpa">GPA: 7.28/10.0</div>
+                    </div>
+                    <div class="courses">
+                        <div class="courses-label">RELEVANT COURSES:</div>
+                        <p>Network and Protocols, Wireless Communication, Embedded Systems, Linear Integrated Systems, Control Systems & Object-Oriented Programming</p>
+                    </div>
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-elevated); border-left: 3px solid var(--accent-yellow);">
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Published thesis at International Conference on Communication & Signal Processing (ICCSP) 2020</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2>Technical Skills</h2>
+            <div class="skills-section">
+                <div class="skill-category">
+                    <h3>Cybersecurity Domain Skills</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">Risk Assessment & Management</div>
+                        <div class="skill-item">Digital Forensics</div>
+                        <div class="skill-item">IT Compliance</div>
+                        <div class="skill-item">Packet Sniffing & Spoofing</div>
+                        <div class="skill-item">Log Analysis</div>
+                        <div class="skill-item">Threat Analysis & Management</div>
+                        <div class="skill-item">Enumeration & Exploitation</div>
+                        <div class="skill-item">Cryptography</div>
+                        <div class="skill-item">Linux Security</div>
+                        <div class="skill-item">Kerberos</div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Security Tools</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">Microsoft Sentinel</div>
+                        <div class="skill-item">CrowdStrike Falcon</div>
+                        <div class="skill-item">Qualys</div>
+                        <div class="skill-item">Mimecast</div>
+                        <div class="skill-item">Microsoft Defender</div>
+                        <div class="skill-item">Intune</div>
+                        <div class="skill-item">Ghidra</div>
+                        <div class="skill-item">Wireshark</div>
+                        <div class="skill-item">Burp Suite</div>
+                        <div class="skill-item">SQLmap</div>
+                        <div class="skill-item">Nmap</div>
+                        <div class="skill-item">Splunk SIEM</div>
+                        <div class="skill-item">Snort</div>
+                        <div class="skill-item">John the Ripper</div>
+                        <div class="skill-item">Hydra</div>
+                        <div class="skill-item">Pwn-dbg</div>
+                        <div class="skill-item">Cisco Packet Tracer</div>
+                        <div class="skill-item">Nessus</div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Programming & Databases</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">Python</div>
+                        <div class="skill-item">PowerShell</div>
+                        <div class="skill-item">Sigma</div>
+                        <div class="skill-item">Yara</div>
+                        <div class="skill-item">C/C++</div>
+                        <div class="skill-item">JavaScript</div>
+                        <div class="skill-item">HTML/CSS</div>
+                        <div class="skill-item">MongoDB</div>
+                        <div class="skill-item">MySQL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements">
+        <div class="container">
+            <h2>Achievements</h2>
+            
+            <div class="thm-section">
+                <div class="thm-header">
+                    <div>
+                        <div class="thm-title">TryHackMe</div>
+                        <p style="color: var(--text-secondary); margin-top: 0.5rem;">Hands-on cybersecurity training and challenges</p>
+                    </div>
+                    <div class="thm-rank">TOP 1% GLOBAL</div>
+                </div>
+                <a href="https://tryhackme.com/p/mjcube" target="_blank" style="color: var(--accent-green); font-family: 'Fira Code', monospace; text-decoration: none; display: inline-block; margin-bottom: 2rem;">→ View TryHackMe Profile</a>
+            </div>
+
+            <div class="ctf-achievements">
+                <div class="ctf-card">
+                    <h4>NCL Spring 2025 CTF</h4>
+                    <p>Achieved Top 11% rank (918 out of 8487) in the National Cyber League Spring 2025 Capture the Flag Individual Game</p>
+                </div>
+                <div class="ctf-card">
+                    <h4>NCL Fall 2024 CTF</h4>
+                    <p>Achieved Top 12% rank (1038 out of 8484) in the National Cyber League Fall 2024 Capture the Flag Individual Game</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="writeups">
+        <div class="container">
+            <h2>TryHackMe Writeups</h2>
+            
+            <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 2.5rem; margin-bottom: 3rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 2rem;">
+                    <div>
+                        <h3 style="font-size: 2rem; color: var(--accent-green); font-family: 'Fira Code', monospace; margin-bottom: 0.5rem;">TryHackMe Writeups</h3>
+                        <p style="color: var(--text-secondary);">Detailed documentation of my security challenges and CTF solutions</p>
+                    </div>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" class="btn btn-primary" style="display: inline-block; text-align: center;">
+                        View All Writeups
+                    </a>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    I maintain comprehensive writeups of TryHackMe rooms on my Notion page, covering various cybersecurity topics including penetration testing, web exploitation, privilege escalation, and network security. Each writeup includes detailed methodology, tool usage, and key learnings from the challenges.
+                </p>
+            </div>
+
+            <div class="writeups-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <div class="project-card">
+                    <h3>OWASP Top 10</h3>
+                    <div style="margin: 1rem 0;">
+                        <span class="tag" style="background: rgba(210, 153, 34, 0.2); color: var(--accent-yellow); border-color: rgba(210, 153, 34, 0.3);">Medium</span>
+                    </div>
+                    <p>Comprehensive exploration of the OWASP Top 10 web application security risks, including injection attacks, broken authentication, XSS, and security misconfigurations.</p>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" style="color: var(--accent-green); text-decoration: none; font-family: 'Fira Code', monospace; display: inline-block; margin-top: 1rem;">
+                        → Read Writeup
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Penetration Testing Basics</h3>
+                    <div style="margin: 1rem 0;">
+                        <span class="tag" style="background: rgba(63, 185, 80, 0.2); color: var(--accent-green); border-color: rgba(63, 185, 80, 0.3);">Easy</span>
+                    </div>
+                    <p>Introduction to penetration testing methodology covering reconnaissance, scanning, enumeration, exploitation, and post-exploitation techniques.</p>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" style="color: var(--accent-green); text-decoration: none; font-family: 'Fira Code', monospace; display: inline-block; margin-top: 1rem;">
+                        → Read Writeup
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Buffer Overflow Exploitation</h3>
+                    <div style="margin: 1rem 0;">
+                        <span class="tag" style="background: rgba(248, 81, 73, 0.2); color: var(--accent-red); border-color: rgba(248, 81, 73, 0.3);">Hard</span>
+                    </div>
+                    <p>Advanced buffer overflow exploitation techniques including stack analysis, shellcode development, and bypassing modern protections like DEP and ASLR.</p>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" style="color: var(--accent-green); text-decoration: none; font-family: 'Fira Code', monospace; display: inline-block; margin-top: 1rem;">
+                        → Read Writeup
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Linux Privilege Escalation</h3>
+                    <div style="margin: 1rem 0;">
+                        <span class="tag" style="background: rgba(210, 153, 34, 0.2); color: var(--accent-yellow); border-color: rgba(210, 153, 34, 0.3);">Medium</span>
+                    </div>
+                    <p>Common Linux privilege escalation vectors including SUID binaries, kernel exploits, cron jobs, and misconfigured services with practical examples.</p>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" style="color: var(--accent-green); text-decoration: none; font-family: 'Fira Code', monospace; display: inline-block; margin-top: 1rem;">
+                        → Read Writeup
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Web Application Exploitation</h3>
+                    <div style="margin: 1rem 0;">
+                        <span class="tag" style="background: rgba(210, 153, 34, 0.2); color: var(--accent-yellow); border-color: rgba(210, 153, 34, 0.3);">Medium</span>
+                    </div>
+                    <p>SQL injection, XSS, CSRF, and other web vulnerabilities with hands-on exploitation techniques and mitigation strategies.</p>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" style="color: var(--accent-green); text-decoration: none; font-family: 'Fira Code', monospace; display: inline-block; margin-top: 1rem;">
+                        → Read Writeup
+                    </a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Active Directory Attacks</h3>
+                    <div style="margin: 1rem 0;">
+                        <span class="tag" style="background: rgba(248, 81, 73, 0.2); color: var(--accent-red); border-color: rgba(248, 81, 73, 0.3);">Hard</span>
+                    </div>
+                    <p>Advanced AD exploitation covering Kerberoasting, Golden Tickets, Pass-the-Hash, and domain enumeration using tools like BloodHound and Mimikatz.</p>
+                    <a href="https://marianjosephjeffrey.notion.site/ebd/2ed3eecded5380f092a4c1f1b395a716?v=2ed3eecded53800b8cbd000c5f716279" target="_blank" style="color: var(--accent-green); text-decoration: none; font-family: 'Fira Code', monospace; display: inline-block; margin-top: 1rem;">
+                        → Read Writeup
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications">
+        <div class="container">
+            <h2>Certifications</h2>
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <h3>CompTIA Security+</h3>
+                </div>
+                <div class="cert-card">
+                    <h3>eJPTv2</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">eLearning Junior Penetration Tester</p>
+                </div>
+                <div class="cert-card">
+                    <h3>NSE 1</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">Network Security Associate - Fortinet</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="https://github.com/marianjosephjeffrey" class="social-link" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/in/marianjohn" class="social-link" target="_blank">LinkedIn</a>
+                    <a href="mailto:mjcube1999@gmail.com" class="social-link">Email</a>
+                    <a href="https://tryhackme.com/p/mjcube" class="social-link" target="_blank">TryHackMe</a>
+                    <a href="https://marianjosephjeffrey.com/" class="social-link" target="_blank">Portfolio</a>
+                </div>
+                <div style="font-family: 'Fira Code', monospace; color: var(--text-muted);">
+                    (240)-927-7590
+                </div>
+            </div>
+            <div class="footer-note">
+                © 2026 Marian John • Built with security in mind
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Download resume
+        document.getElementById('downloadResume').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const resumeContent = `MARIAN JOHN
+Houston, TX 77056 | (240)-927-7590 | mjcube1999@gmail.com
+LinkedIn: linkedin.com/in/marian-john | GitHub: github.com/mjcube1999
+
+═══════════════════════════════════════════════════════════════════
+
+EDUCATION
+
+UNIVERSITY OF MARYLAND, COLLEGE PARK, MD                    2022 - 2024
+Master of Engineering in Cybersecurity                      GPA: 3.8/4.0
+• Cum Laude
+• Relevant Courses: Secure Coding, Cloud Security, Penetration Testing, 
+  Security Tools for Information Security, Network Security & Hacking 
+  of C and Unix Binaries
+
+AMRITA VISHWA VIDYAPEETHAM, COIMBATORE, TN                  2016 - 2020
+B. Tech in Electronics and Communication Engineering        GPA: 7.28/10.0
+• Published thesis at International Conference on Communication & 
+  Signal Processing (ICCSP) 2020
+• Relevant Courses: Network and Protocols, Wireless Communication, 
+  Embedded Systems, Linear Integrated Systems, Control Systems & 
+  Object-Oriented Programming
+
+═══════════════════════════════════════════════════════════════════
+
+PROFESSIONAL EXPERIENCE
+
+Security Engineer                                           July 2025 - Present
+Perfect Solutions Group Inc | Remote | Full Time
+
+• Strengthened data governance by improving the existing Microsoft 
+  Purview DLP program, optimizing sensitivity labels, refining audit 
+  policies, and reducing unprotected sensitive data exposure
+• Increased endpoint compliance rates from 72% to 96% by deploying 
+  Intune device configuration profiles, enforcing hardening baselines, 
+  and proactively monitoring non-compliant device trends
+
+Application Security Engineer                               Aug 2024 - July 2025
+Bright Mind Enrichment and Schooling (BME) | Remote | Volunteer
+
+• Successfully developed different features for the organization's iOS 
+  mobile application which is a frontier for the BME's live events
+• Integrated security hardening and weekly secure code reviews into 
+  Agile/DevOps CI/CD pipelines, identifying vulnerabilities and driving 
+  effective mitigations
+
+System Engineer - DevSecOps                                 Aug 2020 - Aug 2022
+Tata Consultancy Services | Chennai | Full Time
+
+• Investigated and remediated phishing and malicious email incidents 
+  using Mimecast, improving organization's email security posture
+• Optimized Microsoft Defender policies via alert analysis, reducing 
+  false positives by 85% and improving incident response
+• Conducted phishing simulation campaigns using KnowBe4 to improve 
+  security awareness and reduce phishing susceptibility
+
+═══════════════════════════════════════════════════════════════════
+
+TECHNICAL SKILLS
+
+Cybersecurity Domain Skills:
+Risk Assessment & Management, Digital Forensics, IT Compliance, 
+Packet Sniffing & Spoofing, Log Analysis, Threat Analysis & Management, 
+Enumeration & Exploitation, Cryptography, Linux Security, Kerberos
+
+Security Tools:
+Microsoft Sentinel, CrowdStrike Falcon, Qualys, Mimecast, 
+Microsoft Defender, Intune, Ghidra, Wireshark, Burp Suite, SQLmap, 
+Nmap, Splunk SIEM, Snort, John the Ripper, Hydra, Pwn-dbg, 
+Cisco Packet Tracer, Nessus
+
+Programming Languages & Databases:
+Python, PowerShell, Sigma, Yara, C/C++, JavaScript, HTML, CSS, 
+MongoDB, MySQL
+
+═══════════════════════════════════════════════════════════════════
+
+PROJECTS
+
+IBM Clicked Incident Management                             Jan 2024 - May 2024
+• Developed and implemented an enterprise security program for an 
+  ed-tech startup, ensuring strong cybersecurity
+• Managed Incident Response for a phishing attack, swiftly mitigating 
+  threats and minimizing damage
+• Developed a security plan and roadmap integrating SIEM, IDS, firewalls, 
+  and compliance with NIST, ISO, and cyber laws
+Tools: IP Quality Score, URL Scan, Virus Hash, Total Virus, 
+Talos Intelligence, IP Location
+
+Information Assurance                                        Jan 2024 - May 2024
+• Led the development and implementation of an integrated security 
+  solution using IPS, IDS, and EDR technologies
+• Performed network security assessments, identified vulnerabilities, 
+  deployed endpoint security, and enforced DLP strategies
+• Implemented SOAR tools for efficient incident response and disaster 
+  recovery, enhancing remote work resilience and IAM
+• Secured Linux and Windows with IPS, led audits, managed 
+  vulnerabilities, and ensured GRC compliance
+Tools: Snort, Suricata, CrowdStrike Falcon, Microsoft Defender for 
+Endpoint, Microsoft Sentinel, Qualys, Nessus, Wireshark
+
+═══════════════════════════════════════════════════════════════════
+
+CERTIFICATIONS
+
+• CompTIA Security+
+• eJPTv2 - eLearning Junior Penetration Tester
+• NSE 1 Network Security Associate Certification at Fortinet
+
+═══════════════════════════════════════════════════════════════════
+
+ACHIEVEMENTS
+
+• TryHackMe Top 1% Global Ranking
+• NCL Spring 2025 CTF: Top 11% rank (918 out of 8487)
+• NCL Fall 2024 CTF: Top 12% rank (1038 out of 8484)
+
+═══════════════════════════════════════════════════════════════════`;
+
+            const blob = new Blob([resumeContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Marian_John_Resume.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.experience-item, .project-card, .education-card, .cert-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
